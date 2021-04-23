@@ -1,5 +1,6 @@
 package com;
 
+import com.exception.FileParsingException;
 import com.model.ParkingLot;
 import com.util.FileParsingUtil;
 
@@ -26,13 +27,7 @@ public class Main {
 
             // Read first line to get parking lot sizes
             final String firstLine = scanner.nextLine();
-            final List<Integer> lotSizes;
-            try {
-                lotSizes = FileParsingUtil.parseParkingLotSizes(firstLine);
-            } catch (Exception e) {
-                System.out.println(e.getMessage());
-                return;
-            }
+            final List<Integer> lotSizes = FileParsingUtil.parseParkingLotSizes(firstLine);
             
             // Make new parking lot
             final ParkingLot parkingLot = new ParkingLot(lotSizes.get(0), lotSizes.get(1));
@@ -44,6 +39,8 @@ public class Main {
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("Error: File specified does not exist.");
+        } catch (FileParsingException e) {
+            System.out.println(e.getMessage());
         }
     }
 }
