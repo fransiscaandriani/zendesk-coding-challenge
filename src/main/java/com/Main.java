@@ -36,7 +36,7 @@ public class Main {
                         "size of car parking lot and the size of motorcycle parking lot respectively");
                 return;
             }
-            
+
             while (scanner.hasNextLine()) {
                 final String data = scanner.nextLine();
                 System.out.println(data);
