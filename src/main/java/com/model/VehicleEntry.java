@@ -9,5 +9,6 @@ import java.util.Date;
 @Getter
 public class VehicleEntry {
     private final Date entryTime;
-    private final String vehicleNumber;
+    private final VehicleType vehicleType;
+    private final int lotIndex;
 }
