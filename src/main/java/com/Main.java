@@ -1,5 +1,7 @@
 package com;
 
+import com.model.ParkingLot;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Arrays;
@@ -36,6 +38,9 @@ public class Main {
                         "size of car parking lot and the size of motorcycle parking lot respectively");
                 return;
             }
+
+            // Make new parking lot
+            final ParkingLot parkingLot = new ParkingLot(lotSizes.get(0), lotSizes.get(1));
 
             while (scanner.hasNextLine()) {
                 final String data = scanner.nextLine();
