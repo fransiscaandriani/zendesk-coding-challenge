@@ -1,6 +1,7 @@
 package com;
 
 import com.model.ParkingLot;
+import com.util.FileParsingUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -23,22 +24,16 @@ public class Main {
                 return;
             }
 
-            // Read first line
+            // Read first line to get parking lot sizes
             final String firstLine = scanner.nextLine();
-
-            // Get car and motorcycle lot sizes
-            final List<Integer> lotSizes = Arrays.stream(firstLine.split(" "))
-                    .map(Integer::parseInt)
-                    .collect(Collectors.toList());
-
-            // Check if lot sizes are valid
-            if(lotSizes.size() != 2 || lotSizes.get(0) == null || lotSizes.get(1) == null
-            || lotSizes.get(0) < 0 || lotSizes.get(1) < 0) {
-                System.out.println("Error: Invalid first line. First line should contain two integers indicating the " +
-                        "size of car parking lot and the size of motorcycle parking lot respectively");
+            final List<Integer> lotSizes;
+            try {
+                lotSizes = FileParsingUtil.parseParkingLotSizes(firstLine);
+            } catch (Exception e) {
+                System.out.println(e.getMessage());
                 return;
             }
-
+            
             // Make new parking lot
             final ParkingLot parkingLot = new ParkingLot(lotSizes.get(0), lotSizes.get(1));
 
