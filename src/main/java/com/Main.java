@@ -16,8 +16,12 @@ public class Main {
 
     public static void main(String[] args) {
         try {
+            System.out.println("Enter test file name: ");
+            Scanner commandLineScanner = new Scanner(System.in);
+            final String fileName = commandLineScanner.nextLine();
+
             // Read txt file
-            final File fileInput = new File("input/testCase1.txt");
+            final File fileInput = new File("input/" + fileName);
             final Scanner scanner = new Scanner(fileInput);
 
             // Check that file is not empty
