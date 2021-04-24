@@ -13,7 +13,7 @@ public class ParkingLot {
     private final Map<VehicleType, List<Boolean>> parkingMap = new HashMap<>();
 
     // Create map to store the vehicle entry detail, mapping the vehicle number to its details
-    private final Map<String, Map.Entry<String, VehicleEntry>> vehicleMap = new HashMap<>();
+    private final Map<String, VehicleEntry> vehicleMap = new HashMap<>();
 
 
     public ParkingLot(final int carLotSize, final int motorcycleLotSize) {

@@ -1,16 +1,16 @@
 package com;
 
 import com.exception.FileParsingException;
+import com.exception.ParkingLotException;
 import com.model.ParkingLot;
 import com.util.FileParsingUtil;
+import com.util.ParkingLotUtil;
 
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
-import java.util.stream.Collectors;
 
 public class Main {
 
@@ -37,12 +37,15 @@ public class Main {
             while (scanner.hasNextLine()) {
                 final String data = scanner.nextLine();
                 final Map<String, String> vehicleData = FileParsingUtil.parseVehicleInputLine(data);
-                System.out.println(vehicleData);
+                final String output = ParkingLotUtil.processVehicleData(parkingLot, vehicleData);
+                System.out.println(output);
             }
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("Error: File specified does not exist.");
         } catch (FileParsingException e) {
+            System.out.println(e.getMessage());
+        } catch (ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
