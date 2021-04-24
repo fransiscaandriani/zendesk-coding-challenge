@@ -47,9 +47,7 @@ public class Main {
             scanner.close();
         } catch (FileNotFoundException e) {
             System.out.println("Error: File specified does not exist.");
-        } catch (FileParsingException e) {
-            System.out.println(e.getMessage());
-        } catch (ParkingLotException e) {
+        } catch (FileParsingException | ParkingLotException e) {
             System.out.println(e.getMessage());
         }
     }
