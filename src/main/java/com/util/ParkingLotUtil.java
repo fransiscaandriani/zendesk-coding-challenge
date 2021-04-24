@@ -25,9 +25,15 @@ public class ParkingLotUtil {
         return strBuilder.toString();
     }
 
-    private static String processEnteringVehicle(final ParkingLot parkingLot, final Map<String, String> vehicleData) {
+    private static String processEnteringVehicle(final ParkingLot parkingLot, final Map<String, String> vehicleData) throws ParkingLotException {
         final StringBuilder stringBuilder = new StringBuilder();
         final String vehicleNumber = vehicleData.get("VehicleNumber");
+
+        // Check if vehicleNumber already exists in vehicleMap
+        if(parkingLot.getVehicleMap().containsKey(vehicleNumber)) {
+            throw new ParkingLotException("Error: Vehicle is already inside");
+        }
+
         final VehicleEntry vehicleEntry = createVehicleEntry(vehicleData.get("VehicleType"), vehicleData.get("Timestamp"));
 
         // Get parking lot for the vehicle type
