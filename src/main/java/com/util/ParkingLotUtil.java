@@ -13,8 +13,6 @@ import static com.constant.ParkingLotConstants.*;
 import static com.constant.RegexConstants.SINGLE_SPACE;
 
 public class ParkingLotUtil {
-
-
     public static String processVehicleData(final ParkingLot parkingLot, final Map<String, String> vehicleData) throws ParkingLotException {
         final StringBuilder strBuilder = new StringBuilder();
         if(vehicleData.get(DIRECTION).equals(ENTER)) {
