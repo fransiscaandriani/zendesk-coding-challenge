@@ -37,7 +37,7 @@ public class Main {
             while (scanner.hasNextLine()) {
                 final String data = scanner.nextLine();
                 final Map<String, String> vehicleData = FileParsingUtil.parseVehicleInputLine(data);
-                System.out.println(data);
+                System.out.println(vehicleData);
             }
             scanner.close();
         } catch (FileNotFoundException e) {

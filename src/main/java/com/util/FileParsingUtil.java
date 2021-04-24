@@ -4,13 +4,11 @@ import com.exception.FileParsingException;
 import com.model.VehicleEntry;
 import com.model.VehicleType;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class FileParsingUtil {
+    private static Set<String> vehicleTypesConstant = Arrays.stream(VehicleType.values()).map(Enum::toString).collect(Collectors.toSet());
     public static List<Integer> parseParkingLotSizes(final String line) throws FileParsingException{
         // Get car and motorcycle lot sizes
         final List<Integer> lotSizes = Arrays.stream(line.split(" "))
@@ -28,8 +26,10 @@ public class FileParsingUtil {
     }
 
     public static Map<String, String> parseVehicleInputLine(final String line) throws FileParsingException{
+        final String trimmedLine = trimZeroWidthSpace(line);
+
         // Get each individual data from the string
-        final List<String> data = Arrays.asList(line.split(" "));
+        final List<String> data = Arrays.asList(trimmedLine.split(" "));
 
         final Map<String, String> result = new HashMap<>();
 
@@ -96,14 +96,18 @@ public class FileParsingUtil {
     }
 
     private static boolean checkIfVehicleTypeIsValid(final String vehicleTypeString) {
-        return Arrays.asList(VehicleType.values()).contains(vehicleTypeString);
+        return vehicleTypesConstant.contains(vehicleTypeString.toUpperCase());
     }
 
     private static boolean checkIfVehicleNumberIsValid(final String vehicleNumberString) {
-        return vehicleNumberString.matches("/[A-Za-z]{3}[\\d]{4}[A-Za-z]/");
+        return vehicleNumberString.matches("^[A-Za-z]{3}[\\d]{4}[A-Za-z]$");
     }
 
     private static boolean checkIfTimestampIsValid(final String timestampString) {
         return timestampString.matches("^\\d*$");
+    }
+
+    private static String trimZeroWidthSpace(final String untrimmedStr) {
+        return untrimmedStr.replaceAll("[\\p{Cf}]", "");
     }
 }
