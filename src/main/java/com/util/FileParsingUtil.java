@@ -10,8 +10,10 @@ import static com.constant.RegexConstants.*;
 
 public class FileParsingUtil {
     public static List<Integer> parseParkingLotSizes(final String line) throws FileParsingException{
+        final String trimmedLine = trimZeroWidthSpace(line);
+        
         // Get car and motorcycle lot sizes
-        final List<Integer> lotSizes = Arrays.stream(line.split(SINGLE_SPACE))
+        final List<Integer> lotSizes = Arrays.stream(trimmedLine.split(SINGLE_SPACE))
                 .map(Integer::parseInt)
                 .collect(Collectors.toList());
 
