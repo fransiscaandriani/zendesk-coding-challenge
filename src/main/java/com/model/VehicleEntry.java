@@ -1,14 +1,18 @@
 package com.model;
 
-import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.Date;
 
-@AllArgsConstructor
-@Getter
+@Getter @Setter
 public class VehicleEntry {
     private final Date entryTime;
     private final VehicleType vehicleType;
-    private final int lotIndex;
+    private int lotIndex;
+
+    public VehicleEntry(Date entryTime, VehicleType vehicleType) {
+        this.entryTime = entryTime;
+        this.vehicleType = vehicleType;
+    }
 }
