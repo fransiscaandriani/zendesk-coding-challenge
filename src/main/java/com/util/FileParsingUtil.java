@@ -9,13 +9,18 @@ import static com.constant.FileParsingConstants.*;
 import static com.constant.RegexConstants.*;
 
 public class FileParsingUtil {
-    public static List<Integer> parseParkingLotSizes(final String line) throws FileParsingException{
+    public static List<Integer> parseParkingLotSizes(final String line) throws FileParsingException {
         final String trimmedLine = trimZeroWidthSpace(line);
-        
+
         // Get car and motorcycle lot sizes
-        final List<Integer> lotSizes = Arrays.stream(trimmedLine.split(SINGLE_SPACE))
-                .map(Integer::parseInt)
-                .collect(Collectors.toList());
+        final List<Integer> lotSizes;
+        try {
+            lotSizes = Arrays.stream(trimmedLine.split(SINGLE_SPACE))
+                    .map(Integer::parseInt)
+                    .collect(Collectors.toList());
+        } catch (NumberFormatException e) {
+            throw new FileParsingException("Error: Input string contains non-integer character");
+        }
 
         // Check if lot sizes are valid
         if(lotSizes.size() != 2 || lotSizes.get(0) == null || lotSizes.get(1) == null
