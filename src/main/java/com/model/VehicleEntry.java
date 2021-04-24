@@ -3,16 +3,14 @@ package com.model;
 import lombok.Getter;
 import lombok.Setter;
 
-import java.util.Date;
-
 @Getter @Setter
 public class VehicleEntry {
-    private final Date entryTime;
+    private final int entryTimestamp;
     private final VehicleType vehicleType;
     private int lotIndex;
 
-    public VehicleEntry(Date entryTime, VehicleType vehicleType) {
-        this.entryTime = entryTime;
+    public VehicleEntry(int entryTimestamp, VehicleType vehicleType) {
+        this.entryTimestamp = entryTimestamp;
         this.vehicleType = vehicleType;
     }
 }
