@@ -83,7 +83,7 @@ public class FileParsingUtil {
         if(checkIfVehicleNumberIsValid(data.get(1))) {
             result.put("VehicleNumber", data.get(1));
         } else {
-            throw new FileParsingException("Error: Vehicle number is invalid.");
+            throw new FileParsingException("Error: Vehicle number is invalid. It has to be a valid Singapore vehicle number");
         }
 
         // Check if timestamp is valid
