@@ -5,19 +5,19 @@ import com.model.ParkingLot;
 import com.model.VehicleEntry;
 import com.model.VehicleType;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static com.constant.FileParsingConstants.*;
+import static com.constant.ParkingLotConstants.*;
+import static com.constant.RegexConstants.SINGLE_SPACE;
+
 public class ParkingLotUtil {
-    private static final Map<VehicleType, Integer> parkingFee = new HashMap<VehicleType, Integer>() {{
-        put(VehicleType.CAR, 2);
-        put(VehicleType.MOTORCYCLE, 1);
-    }};
+
 
     public static String processVehicleData(final ParkingLot parkingLot, final Map<String, String> vehicleData) throws ParkingLotException {
         final StringBuilder strBuilder = new StringBuilder();
-        if(vehicleData.get("Direction").equals("Enter")) {
+        if(vehicleData.get(DIRECTION).equals(ENTER)) {
             strBuilder.append(processEnteringVehicle(parkingLot, vehicleData));
         } else {
             strBuilder.append(processExitingVehicle(parkingLot, vehicleData));
@@ -27,14 +27,14 @@ public class ParkingLotUtil {
 
     private static String processEnteringVehicle(final ParkingLot parkingLot, final Map<String, String> vehicleData) throws ParkingLotException {
         final StringBuilder stringBuilder = new StringBuilder();
-        final String vehicleNumber = vehicleData.get("VehicleNumber");
+        final String vehicleNumber = vehicleData.get(VEHICLE_NUMBER);
 
         // Check if vehicleNumber already exists in vehicleMap
         if(parkingLot.getVehicleMap().containsKey(vehicleNumber)) {
             throw new ParkingLotException("Error: Vehicle is already inside");
         }
 
-        final VehicleEntry vehicleEntry = createVehicleEntry(vehicleData.get("VehicleType"), vehicleData.get("Timestamp"));
+        final VehicleEntry vehicleEntry = createVehicleEntry(vehicleData.get(VEHICLE_TYPE), vehicleData.get(TIMESTAMP));
 
         // Get parking lot for the vehicle type
         final List<Boolean> designatedVehicleParkingLot = parkingLot.getParkingMap().get(vehicleEntry.getVehicleType());
@@ -44,7 +44,7 @@ public class ParkingLotUtil {
 
         // If there is no empty lot
         if(emptyIndex == -1) {
-            return "Reject";
+            return REJECT;
         }
 
         // Fill in empty lot
@@ -53,14 +53,15 @@ public class ParkingLotUtil {
         // Save vehicle entry in vehicleMap for future use
         vehicleEntry.setLotIndex(emptyIndex);
         parkingLot.getVehicleMap().put(vehicleNumber, vehicleEntry);
-        stringBuilder.append("Accept ");
+        stringBuilder.append(ACCEPT);
+        stringBuilder.append(SINGLE_SPACE);
         stringBuilder.append(getVehicleLotString(vehicleEntry));
         return stringBuilder.toString();
     }
 
     private static String processExitingVehicle(final ParkingLot parkingLot, final Map<String, String> vehicleData) throws ParkingLotException {
-        final String vehicleNumber = vehicleData.get("VehicleNumber");
-        final int exitTimestamp = Integer.parseInt(vehicleData.get("Timestamp"));
+        final String vehicleNumber = vehicleData.get(VEHICLE_NUMBER);
+        final int exitTimestamp = Integer.parseInt(vehicleData.get(TIMESTAMP));
 
         // Remove vehicle from vehicleMap
         final VehicleEntry vehicleEntry = parkingLot.getVehicleMap().remove(vehicleNumber);
@@ -77,7 +78,7 @@ public class ParkingLotUtil {
 
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getVehicleLotString(vehicleEntry));
-        stringBuilder.append(" ");
+        stringBuilder.append(SINGLE_SPACE);
         stringBuilder.append(calculateFee(exitTimestamp, vehicleEntry));
         return stringBuilder.toString();
     }
@@ -94,11 +95,11 @@ public class ParkingLotUtil {
         final StringBuilder stringBuilder = new StringBuilder();
         // Append Vehicle Type
         final String vehicleEntryUpperCase = vehicleEntry.getVehicleType().toString();
-        stringBuilder.append(vehicleEntryUpperCase.substring(0, 1));
+        stringBuilder.append(vehicleEntryUpperCase, 0, 1);
         stringBuilder.append(vehicleEntryUpperCase.substring(1).toLowerCase());
 
         // Append "Lot"
-        stringBuilder.append("Lot");
+        stringBuilder.append(LOT);
 
         // Append index starting from 1
         stringBuilder.append(vehicleEntry.getLotIndex() + 1);
@@ -107,8 +108,8 @@ public class ParkingLotUtil {
 
     private static int calculateFee(final int exitTimestamp, final VehicleEntry vehicleEntry) {
         int secondsParked = exitTimestamp - vehicleEntry.getEntryTimestamp();
-        double hoursParked = secondsParked/3600.0;
+        double hoursParked = secondsParked/ONE_HOUR_IN_SECONDS;
         int roundedUpHoursParked = (int) Math.ceil(hoursParked);
-        return roundedUpHoursParked * parkingFee.get(vehicleEntry.getVehicleType());
+        return roundedUpHoursParked * PARKING_FEE.get(vehicleEntry.getVehicleType());
     }
 }
