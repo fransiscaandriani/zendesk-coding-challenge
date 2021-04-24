@@ -61,12 +61,19 @@ public class ParkingLotUtil {
     private static String processExitingVehicle(final ParkingLot parkingLot, final Map<String, String> vehicleData) throws ParkingLotException {
         final String vehicleNumber = vehicleData.get("VehicleNumber");
         final int exitTimestamp = Integer.parseInt(vehicleData.get("Timestamp"));
-        final VehicleEntry vehicleEntry = parkingLot.getVehicleMap().get(vehicleNumber);
+
+        // Remove vehicle from vehicleMap
+        final VehicleEntry vehicleEntry = parkingLot.getVehicleMap().remove(vehicleNumber);
 
         // Check if vehicle does not exist in parking lot
         if(vehicleEntry == null) {
             throw new ParkingLotException("Error: Vehicle " + vehicleNumber + " does not exist in parking lot");
         }
+
+        // Remove vehicle from parkingMap
+        parkingLot.getParkingMap()
+                .get(vehicleEntry.getVehicleType())
+                .set(vehicleEntry.getLotIndex(), false);
 
         final StringBuilder stringBuilder = new StringBuilder();
         stringBuilder.append(getVehicleLotString(vehicleEntry));
