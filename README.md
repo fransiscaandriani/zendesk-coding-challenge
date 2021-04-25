@@ -5,6 +5,10 @@
 - Maven 3.6.1
 - Your favorite IDE
 
+## Assumptions
+- Timestamps are in ascending order
+- Vehicle numbers are unique and is in Singapore vehicle number format "xxx #### y", where x and y are capital letters, and the # represents digits between 0-9
+
 ## How to add test cases
 - Test cases should be in input folder
 - Input folder should be in the root folder where you run the app from
